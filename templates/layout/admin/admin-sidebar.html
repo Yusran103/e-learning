@@ -1,0 +1,45 @@
+{% load static %}
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">ELEARNING UASBN</li>
+            <li><a href="{% url 'index' %}"><i class="fa fa-home"></i> <span>DASHBOARD</span></a></li>
+            {% if request.session.level == 'Siswa' %}
+            <li class="treeview">
+                <!-- Transaksi -->
+                <a href="#">
+                    <i class="fa fa-folder-open"></i>
+                    <span>MATERI</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{% url 'mainbi' %}"><i class="fa fa-circle-o"></i> Bahasa Indonesia</a></li>
+                    <li><a href="{% url 'mainmm' %}"><i class="fa fa-circle-o"></i> Matematika</a></li>
+                    <li><a href="{% url 'mainipa' %}"><i class="fa fa-circle-o"></i> Ilmu Pengetahuan Alam</a></li>
+                </ul>
+            </li>
+           <li class="treeview">
+                <!-- Transaksi -->
+                <a href="#">
+                    <i class="fa fa-folder-open"></i>
+                    <span>KUIS</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{% url 'kuisbi' %}"><i class="fa fa-circle-o"></i> Bahasa Indonesia</a></li>
+                    <li><a href="{% url 'kuismm' %}"><i class="fa fa-circle-o"></i> Matematika</a></li>
+                    <li><a href="{% url 'kuisipa' %}"><i class="fa fa-circle-o"></i> Ilmu Pengetahuan Alam</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'nilaikuis' %}"><i class="fa fa-folder-open"></i> <span>NILAI</span></a></li>
+            {% endif %}
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

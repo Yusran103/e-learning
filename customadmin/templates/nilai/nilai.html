@@ -1,0 +1,56 @@
+{% extends  "layout/admin/base-admin.html" %}
+{% load static %}
+{% block extrastyle %}
+	<link rel="stylesheet" href="{% static 'assets/DataTables/datatables.min.css' %}">
+{% endblock %}
+{% block page_content %}
+<section class="content-header">
+    <div class="box box-primary col-md-12">
+        <div class="box-header with-border" style="text-align: center;">
+            <h3 class="box-title"><b>List Nilai</b></h3>
+        </div>
+        <br>
+            <div style="width: 100%;">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <table class="table table-bordered" id ="myTable">
+                        <thead>
+                        <tr> 
+                            <th style="width: 90px;text-align:center;"> Tanggal </th>
+                            <th style="width: 90px;text-align:center;"> Nama Kuis </th> 
+                            <th style="width: 90px;text-align:center;"> Nama Pelajaran </th>
+                            <th style="width: 90px;text-align:center;"> Nilai </th> 
+                            <th style="width: 90px;text-align:center;"> Aksi </th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if nilai %}
+                        {% for list_nilai in nilai %}
+                        <tr>
+                            <td>{{list_nilai.date}}</td>                        
+                            <td>{{list_nilai.kuis}}</td>
+                            <td>{{list_nilai.kuis.pelajaran}}</td>
+                            <td>{{list_nilai.nilai}}</td>
+                            <td>X</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5"><center>Tidak ada data Nilai saat ini...</center></td>
+                        </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+    {% block extrajs %}
+    <script src="{% static 'assets/DataTables/datatables.min.js' %}"></script>
+    <script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    });
+    </script>
+    {% endblock %}

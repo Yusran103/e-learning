@@ -1,0 +1,41 @@
+footer #{
+}
+
+footer #colomn{
+}
+
+footer #colomn{
+  width:300px;
+  padding:10px;
+  float:left;
+  font-size:14px;
+}
+
+footer #colomn h2{
+  margin:0px;
+  margin-bottom:10px;
+  font-family:"calibri";
+  font-size:18px;
+  color:#ffffff;
+  font-weight:bold;
+}
+
+footer #colomn a{
+}
+
+footer #colomn a{
+  font-weight:bold;
+  color:#0099cc;
+  text-decoration:none;
+}
+
+footer #colomn a:hover{
+  text-decoration:none;
+}
+
+*:before, *:after{
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+

@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+	<title>Quiz {{nama_pelajaran.pelajaran}}</title>
+	<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+	<style>
+		input[type = 'radio']{
+			transform: scale(2);
+		}
+	</style>
+</head>
+<body>
+	<div class = "container" style="background-color: aqua;">
+		<header>
+			<h1 style="color: black; text-align: center;" >Kuis {{nama_pelajaran.pelajaran}}</h1>
+		</header>
+		<section>
+			<center>
+			<input type = "button" style="visibility: hidden; display: inline-block;" class="btn btn-warning btn-lg pull-right" id = "kembali" value="Kembali" onClick="window.history.back();return false;">
+			</center>
+			<div id = "results"></div>
+			<center>
+			<div id="countdownExample" style="display: inline-block; position: fixed; right: 100px;">
+				<button class="btn"><div class="values" style="font-size:30px;"></div></button>
+			</div>
+			</center>
+			<form name = "quizForm{{nama_pelajaran.id_kuis}}" id="quizForm{{nama_pelajaran.id_kuis}}" method="POST">
+				{% csrf_token %}
+				{% for q in list_soal %}
+				<h3 style="color: black;" > {{ forloop.counter }}.  {{ q.soal|linebreaksbr}}</h3>
+				<input type = "radio" name = "q{{ q.id_soal }}" value = "a" id = "q1a">   a. {{ q.a }}<br><br>
+				<input type = "radio" name = "q{{ q.id_soal }}" value = "b" id = "q1b">   b. {{ q.b }}<br><br>       
+				<input type = "radio" name = "q{{ q.id_soal }}" value = "c" id = "q1c">   c. {{ q.c }}<br><br>
+				<input type = "radio" name = "q{{ q.id_soal }}" value = "d" id = "q1d">   d. {{ q.d }}<br><br>
+				{% endfor %}
+				<br><br>
+				<div style="text-align: center;">
+					<input type = "submit" class="btn btn-primary btn-lg" id="submit" value = "Submit Answer">
+				</div>
+				<br>
+			</form>
+		</section>
+	</div>
+	<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+	<script src="{% static 'assets/easytimer/easytimer.js' %}"></script>
+	<script>
+		window.addEventListener('keydown', function(e){
+			if((e.key=='Escape'||e.key=='Esc'||e.keyCode==27) && (e.target.nodeName=='BODY')){
+				e.preventDefault();
+				let answers = [{% for q in list_soal %}'{{ q.benar }}',{% endfor %}];
+				var total = answers.length;
+				var score = 0;
+				var choice = []
+				//getting choices 
+				for(var i = 1; i <= total; i++){
+					choice[i] = document.forms["quizForm{{nama_pelajaran.id_kuis}}"]["q"+i].value;
+				}
+				//checking answer
+				for(i = 1; i <= total; i++){
+					if(choice[i] == answers[i - 1]){
+						score++;
+					}
+				}
+				//Display Result
+				var hasil = (score/total)*100;
+				var pembulatan = hasil.toFixed(0)
+				var results = document.getElementById('results');
+				$('html, body').animate({ scrollTop: 0 }, 'fast');
+				results.innerHTML = "<h3>You scored <span>" + pembulatan
+				$.ajax({
+					url:"{% url 'nilai' %}",
+					method:"POST",
+					data:{ csrfmiddlewaretoken:"{{ csrf_token }}",nilai:pembulatan,nama:"{{request.session.id}}",kuis:"{{nama_pelajaran.id_kuis}}"},
+					success:function(){
+						event.preventDefault();
+					}
+				})
+				document.getElementById("submit").style.visibility = "hidden";
+				document.getElementById("kembali").style.visibility = "visible";
+				document.getElementById("quizForm{{nama_pelajaran.id_kuis}}").style.visibility = "Hidden"
+				document.getElementById("countdownExample").style.visibility = "hidden"
+			}
+		}, true);
+		
+		var timer = new easytimer.Timer();
+		timer.start({countdown: true, startValues: {seconds: 20}});
+		$('#countdownExample .values').html(timer.getTimeValues().toString());
+		timer.addEventListener('secondsUpdated', function (e) {
+			$('#countdownExample .values').html(timer.getTimeValues().toString());
+		});
+		timer.addEventListener('targetAchieved', function (e) {
+			alert("Waktu Habis")
+			event.preventDefault();
+			let answers = [{% for q in list_soal %}'{{ q.benar }}',{% endfor %}];
+			var total = answers.length;
+			var score = 0;
+			var choice = []
+			//getting choices 
+			for(var i = 1; i <= total; i++){
+				choice[i] = document.forms["quizForm{{nama_pelajaran.id_kuis}}"]["q"+i].value;
+			}
+			//checking answer
+			for(i = 1; i <= total; i++){
+				if(choice[i] == answers[i - 1]){
+					score++;
+				}
+			}
+			//Display Result
+			var hasil = (score/total)*100;
+			var pembulatan = hasil.toFixed(0)
+			var results = document.getElementById('results');
+			$('html, body').animate({ scrollTop: 0 }, 'fast');
+			results.innerHTML = "<h3>You scored <span>" + pembulatan
+			$.ajax({
+				url:"{% url 'nilai' %}",
+				method:"POST",
+				data:{ csrfmiddlewaretoken:"{{ csrf_token }}",nilai:pembulatan,nama:"{{request.session.id}}",kuis:"{{nama_pelajaran.id_kuis}}"},
+				success:function(){
+					event.preventDefault();
+				}
+			})
+			document.getElementById("submit").style.visibility = "hidden";
+			document.getElementById("kembali").style.visibility = "visible";
+			document.getElementById("quizForm{{nama_pelajaran.id_kuis}}").style.visibility = "Hidden"
+			document.getElementById("countdownExample").style.visibility = "hidden"
+		});
+
+		$('#quizForm{{nama_pelajaran.id_kuis}}').submit(function(event){
+			event.preventDefault();
+			let answers = [{% for q in list_soal %}'{{ q.benar }}',{% endfor %}];
+			var total = answers.length;
+			var score = 0;
+			var choice = []
+			//getting choices 
+			for(var i = 1; i <= total; i++){
+				choice[i] = document.forms["quizForm{{nama_pelajaran.id_kuis}}"]["q"+i].value;
+			}
+			// validation
+			for(i = 1; i <= total; i++){
+				if(choice[i] == null || choice[i] == ''){
+					alert('you missed question ' + i);
+					return false;
+				}
+			}
+			//checking answer
+			for(i = 1; i <= total; i++){
+				if(choice[i] == answers[i - 1]){
+					score++;
+				}
+			}
+			//Display Result
+			if (confirm('Apakah Anda Yakin?')) {
+				var hasil = (score/total)*100;
+				var pembulatan = hasil.toFixed(0)
+				var results = document.getElementById('results');
+				$('html, body').animate({ scrollTop: 0 }, 'fast');
+				results.innerHTML = "<h3>You scored <span>" + pembulatan
+				$.ajax({
+					url:"{% url 'nilai' %}",
+					method:"POST",
+					data:{ csrfmiddlewaretoken:"{{ csrf_token }}",nilai:pembulatan,nama:"{{request.session.id}}",kuis:"{{nama_pelajaran.id_kuis}}"},
+					success:function(){
+						event.preventDefault();
+					}
+				})
+				document.getElementById("submit").style.visibility = "hidden";
+				document.getElementById("kembali").style.visibility = "visible";
+				document.getElementById("quizForm{{nama_pelajaran.id_kuis}}").style.visibility = "Hidden"
+				document.getElementById("countdownExample").style.visibility = "hidden"
+			}
+		});
+	</script>
+</body>
+</html>

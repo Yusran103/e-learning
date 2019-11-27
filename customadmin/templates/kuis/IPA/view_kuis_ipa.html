@@ -1,0 +1,37 @@
+{% extends  "layout/admin/base-admin.html" %}
+{% block page_content %}
+<section class="content-header">
+    <div class="box box-primary col-md-12">
+        <div class="box-header with-border" style="text-align: center;">
+            <h3 class="box-title"><b>Kuis Ilmu Pengetahuan Alam</b></h3>
+        </div>
+        <br>
+            <div style="width: 100%;">
+                <form action="{% url 'soalipa' %}" method="POST">
+                    {% csrf_token %}
+                    <table class="table table-bordered">
+                        <tr> 
+                            <th style="width: 40px;text-align:center;"> List Kuis </th> 
+                        </tr>
+                        {% if list_kuis_ipa %}
+                        {% for list_kuis in list_kuis_ipa %}
+                        <tr>
+                            <td><input type="radio" value="{{list_kuis.id_kuis}}" name="kuis">{{list_kuis.nama_kuis}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td><center>Tidak ada data Kuis saat ini...</center></td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    {% if list_kuis_ipa %}
+                    <input type="submit" class="btn btn-primary" value="Kerjakan">
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+    {% block extrajs %}
+    {% endblock %}
