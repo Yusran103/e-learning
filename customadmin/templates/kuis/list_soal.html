@@ -30,10 +30,10 @@
 				{% csrf_token %}
 				{% for q in list_soal %}
 				<h3 style="color: black;" > {{ forloop.counter }}.  {{ q.soal|linebreaksbr}}</h3>
-				<input type = "radio" name = "q{{ q.id_soal }}" value = "a" id = "q1a">   a. {{ q.a }}<br><br>
-				<input type = "radio" name = "q{{ q.id_soal }}" value = "b" id = "q1b">   b. {{ q.b }}<br><br>       
-				<input type = "radio" name = "q{{ q.id_soal }}" value = "c" id = "q1c">   c. {{ q.c }}<br><br>
-				<input type = "radio" name = "q{{ q.id_soal }}" value = "d" id = "q1d">   d. {{ q.d }}<br><br>
+				<input type = "radio" name = "q{{ forloop.counter }}" value = "a" id = "q1a">   a. {{ q.a }}<br><br>
+				<input type = "radio" name = "q{{ forloop.counter }}" value = "b" id = "q1b">   b. {{ q.b }}<br><br>       
+				<input type = "radio" name = "q{{ forloop.counter }}" value = "c" id = "q1c">   c. {{ q.c }}<br><br>
+				<input type = "radio" name = "q{{ forloop.counter }}" value = "d" id = "q1d">   d. {{ q.d }}<br><br>
 				{% endfor %}
 				<br><br>
 				<div style="text-align: center;">
@@ -92,7 +92,7 @@
 		});
 		timer.addEventListener('targetAchieved', function (e) {
 			alert("Waktu Habis")
-			event.preventDefault();
+			e.preventDefault();
 			let answers = [{% for q in list_soal %}'{{ q.benar }}',{% endfor %}];
 			var total = answers.length;
 			var score = 0;
@@ -133,9 +133,10 @@
 			var total = answers.length;
 			var score = 0;
 			var choice = []
+			var form = document.getElementById("quizForm{{nama_pelajaran.id_kuis}}")
 			//getting choices 
 			for(var i = 1; i <= total; i++){
-				choice[i] = document.forms["quizForm{{nama_pelajaran.id_kuis}}"]["q"+i].value;
+				choice[i] = form["q"+i].value;
 			}
 			// validation
 			for(i = 1; i <= total; i++){
@@ -165,6 +166,7 @@
 						event.preventDefault();
 					}
 				})
+				timer.stop();
 				document.getElementById("submit").style.visibility = "hidden";
 				document.getElementById("kembali").style.visibility = "visible";
 				document.getElementById("quizForm{{nama_pelajaran.id_kuis}}").style.visibility = "Hidden"

@@ -41,6 +41,7 @@ urlpatterns = [
     path('kuis/MM/soal',customadmin.soal, name="soalmm"),
     # CEK NILAI VIA rest_framework
     path('nilai', customadmin.NilaiList.as_view(), name="nilai"),
-    path("nilaikuis", customadmin.nilai, name="nilaikuis")
+    path('nilaikuis', customadmin.nilai, name="nilaikuis"),
+    path('print/<int:pk>',customadmin.printnilai, name="printnilai"),
 
 ]

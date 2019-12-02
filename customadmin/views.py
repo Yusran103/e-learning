@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.db import connection
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.db.models import Avg
 from rest_framework import generics
 from .models import Nilai
 from .serializers import *
@@ -190,7 +190,16 @@ def soal(request):
 def nilai(request):
     ambilsesisiswa = request.session['id']
     ambilnilaisiswa = Nilai.objects.filter(nama_id = ambilsesisiswa)
-    return render(request,'nilai/nilai.html',{'nilai':ambilnilaisiswa})
+    rataratanilai = ambilnilaisiswa.aggregate(Avg('nilai'))
+    return render(request,'nilai/nilai.html',{'nilai':ambilnilaisiswa,'ratarata':rataratanilai})
+
+def printnilai(request,pk):
+    ambilidnilai = Nilai.objects.get(pk=pk)
+    ambilkuis = Kuis.objects.get(nama_kuis = ambilidnilai.kuis)
+    ambilprofil = Siswa.objects.get(akun_id=ambilidnilai.nama)
+    asd = "%s , %s" % (ambilprofil,ambilkuis)
+    return HttpResponse(asd)
+    # return render(request,'nilai/print.html',{'nilai':ambilidnilai.nilai})
 
 class NilaiList(generics.ListCreateAPIView):
     queryset = Nilai.objects.all()
