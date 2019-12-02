@@ -1,4 +1,8 @@
 {% extends  "layout/admin/base-admin.html" %}
+{% load static %}
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'assets/DataTables/datatables.min.css' %}">
+{% endblock %}
 {% block page_content %}
 <section class="content-header">
     <div class="box box-primary col-md-12">
@@ -9,10 +13,13 @@
             <div style="width: 100%;">
                 <form action="{% url 'soalipa' %}" method="POST">
                     {% csrf_token %}
-                    <table class="table table-bordered">
-                        <tr> 
-                            <th style="width: 40px;text-align:center;"> List Kuis </th> 
-                        </tr>
+                    <table class="table table-bordered" id ="myTable">
+                        <thead>
+                            <tr> 
+                                <th style="text-align:center;"> List Kuis </th> 
+                            </tr>
+                        </thead>
+                        <tbody>
                         {% if list_kuis_ipa %}
                         {% for list_kuis in list_kuis_ipa %}
                         <tr>
@@ -24,6 +31,7 @@
                             <td><center>Tidak ada data Kuis saat ini...</center></td>
                         </tr>
                         {% endif %}
+                        </tbody>
                     </table>
                     {% if list_kuis_ipa %}
                     <input type="submit" class="btn btn-primary" value="Kerjakan">
@@ -34,4 +42,10 @@
     </section>
     {% endblock %}
     {% block extrajs %}
+        <script src="{% static 'assets/DataTables/datatables.min.js' %}"></script>
+    <script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+    </script>
     {% endblock %}

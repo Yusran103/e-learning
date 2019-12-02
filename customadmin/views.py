@@ -8,13 +8,13 @@ from customadmin.form import Profile_form, User_form
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.db import connection
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Avg
 from rest_framework import generics
 from .models import Nilai
 from .serializers import *
 from django.core import serializers
 from django.core.serializers import serialize 
+from datetime import datetime
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -198,8 +198,11 @@ def printnilai(request,pk):
     ambilkuis = Kuis.objects.get(nama_kuis = ambilidnilai.kuis)
     ambilprofil = Siswa.objects.get(akun_id=ambilidnilai.nama)
     asd = "%s , %s" % (ambilprofil,ambilkuis)
-    return HttpResponse(asd)
-    # return render(request,'nilai/print.html',{'nilai':ambilidnilai.nilai})
+    
+    myDate = datetime.now()
+    formatedDate = myDate.strftime("%Y%m%d%H%M%S")
+    # return HttpResponse(asd)
+    return render(request,'nilai/print.html',{'nilai':ambilidnilai,'kuis':ambilkuis,'profil':ambilprofil,'date':formatedDate})
 
 class NilaiList(generics.ListCreateAPIView):
     queryset = Nilai.objects.all()

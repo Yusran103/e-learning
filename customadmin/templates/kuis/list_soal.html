@@ -85,7 +85,7 @@
 		}, true);
 		
 		var timer = new easytimer.Timer();
-		timer.start({countdown: true, startValues: {seconds: 20}});
+		timer.start({countdown: true, startValues: {minutes: 60}});
 		$('#countdownExample .values').html(timer.getTimeValues().toString());
 		timer.addEventListener('secondsUpdated', function (e) {
 			$('#countdownExample .values').html(timer.getTimeValues().toString());

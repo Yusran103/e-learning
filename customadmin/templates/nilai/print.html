@@ -1,12 +1,61 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Print Nilai </title>
+    <title>{{profil.nama}} ~ {{date}}</title>
+    <link rel="stylesheet" href="{% static 'assets/font/stylesheet.css' %}">
 </head>
-<body>
-    
-</body>
-</html>
+<body onload="window.print()">
+    <center>
+        <style>
+            body  {
+                background-image: url("{% static 'assets/images/background1.png' %}");
+                background-repeat: no-repeat;
+                background-size: 100% 115%;
+                }
+            .signature, .title { 
+                float:left;
+                border-top: 1px solid #000;
+                width: 200px; 
+                text-align: center;
+            }
+            @media print {
+                #printPageButton {
+                    display: none;
+                }
+            }
+            @media print {
+                #printable{
+                    margin:0 auto;
+                }
+            }
+        </style>
+        <div id="divId">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div style="width:800px; height:530px; padding:20px; text-align:center; border: 10px double #000000">
+                <div style="width:750px; height:480px; padding:20px; text-align:center; border: 5px double #000000;border-style: dashed;">
+                    <br>
+                    <br>
+                    <span style="font-size:65px;font-family: 'certificateregular', Arial, sans-serif">Certificate of Quiz</span>
+                    <br><br>
+                    <span style="font-size:25px"><i>This is to certify that</i></span>
+                    <br><br>
+                    <span style="font-size:35px"><b><u>{{profil.nama}}</u></b></span><br/><br/>
+                    <span style="font-size:25px"><i>has completed the Quiz</i></span> <br/><br/>
+                    <span style="font-size:30px">{{kuis.nama_kuis}}</span> <br/><br/>
+                    <span style="font-size:25px">with score <b>{{nilai.nilai}}</b> out of 100</span> <br/><br/><br/><br/>
+                    <span style="font-size:25px"><i>Completed At</i></span><br>
+                    <span style="font-size:25px"><i>{{nilai.created_at}}</i></span><br>
+                                </div>
+                            </div>
+                        </div>
+                    </center>     
+                        </body>
+                        </html>
