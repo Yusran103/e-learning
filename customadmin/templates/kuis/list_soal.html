@@ -18,7 +18,7 @@
 		</header>
 		<section>
 			<center>
-			<input type = "button" style="visibility: hidden; display: inline-block;" class="btn btn-warning btn-lg pull-right" id = "kembali" value="Kembali" onClick="window.history.back();return false;">
+			<input type = "button" style="visibility: hidden; display: inline-block;" class="btn btn-warning btn-lg pull-right" id = "kembali" value="Kembali" onClick="window.location=document.referrer;">
 			</center>
 			<div id = "results"></div>
 			<center>
@@ -29,11 +29,13 @@
 			<form name = "quizForm{{nama_pelajaran.id_kuis}}" id="quizForm{{nama_pelajaran.id_kuis}}" method="POST">
 				{% csrf_token %}
 				{% for q in list_soal %}
+				<div id="jawaban">
 				<h3 style="color: black;" > {{ forloop.counter }}.  {{ q.soal|linebreaksbr}}</h3>
 				<input type = "radio" name = "q{{ forloop.counter }}" value = "a" id = "q1a">   a. {{ q.a }}<br><br>
 				<input type = "radio" name = "q{{ forloop.counter }}" value = "b" id = "q1b">   b. {{ q.b }}<br><br>       
 				<input type = "radio" name = "q{{ forloop.counter }}" value = "c" id = "q1c">   c. {{ q.c }}<br><br>
 				<input type = "radio" name = "q{{ forloop.counter }}" value = "d" id = "q1d">   d. {{ q.d }}<br><br>
+				</div>
 				{% endfor %}
 				<br><br>
 				<div style="text-align: center;">
@@ -46,6 +48,18 @@
 	<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
 	<script src="{% static 'assets/easytimer/easytimer.js' %}"></script>
 	<script>
+		{/* $(document).ready(function(){
+			let soal = $('form').find('div#jawaban');
+			console.log(soal)
+			$.each(soal,function(id,data){
+				let jawaban = $(data).find('input');
+				$.each(jawaban,function(ids,datas){
+					if($(datas).attr('checked')){
+						console.log("hello")
+					}
+				})
+			})
+		}) */}
 		window.addEventListener('keydown', function(e){
 			if((e.key=='Escape'||e.key=='Esc'||e.keyCode==27) && (e.target.nodeName=='BODY')){
 				e.preventDefault();
@@ -63,6 +77,7 @@
 						score++;
 					}
 				}
+				
 				//Display Result
 				var hasil = (score/total)*100;
 				var pembulatan = hasil.toFixed(0)

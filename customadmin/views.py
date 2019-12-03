@@ -15,6 +15,7 @@ from .serializers import *
 from django.core import serializers
 from django.core.serializers import serialize 
 from datetime import datetime
+from django.db.models import Q
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -157,21 +158,60 @@ def pdfmm(request):
 
 @login_required(login_url='/login')
 def kuisipa(request):
+    ambilsesisiswa = request.session['id']
     ambilpelajaran = Pelajaran.objects.get(nama_pelajaran = "Ilmu Pengetahuan Alam")
-    list_kuis_ipa = Kuis.objects.filter(pelajaran=ambilpelajaran.id_pelajaran)
+    ambilnilaisiswa = Nilai.objects.filter(nama_id = ambilsesisiswa,kuis__pelajaran__id_pelajaran=ambilpelajaran.id_pelajaran)
+    nilai_id = []
+    for nil in ambilnilaisiswa:
+        # print(nil.kuis)
+        if nil.kuis:
+            id_k = Kuis.objects.filter(Q(nama_kuis= nil.kuis))
+            nilai_id.append(id_k[0].id_kuis)
+    # print(nilai_id)
+    if nilai_id:
+        list_kuis_ipa = Kuis.objects.filter(~Q(id_kuis__in= nilai_id)).filter(pelajaran=ambilpelajaran.id_pelajaran)
+        # print(list_kuis_mm)
+    else:
+        list_kuis_ipa = Kuis.objects.filter(Q(pelajaran=ambilpelajaran.id_pelajaran))
     return render(request,'kuis/IPA/view_kuis_ipa.html',{'list_kuis_ipa':list_kuis_ipa})
 
 
 @login_required(login_url='/login')
 def kuisbi(request):
+    ambilsesisiswa = request.session['id']
     ambilpelajaran = Pelajaran.objects.get(nama_pelajaran = "Bahasa Indonesia")
-    list_kuis_bi = Kuis.objects.filter(pelajaran=ambilpelajaran.id_pelajaran)
+    ambilnilaisiswa = Nilai.objects.filter(nama_id = ambilsesisiswa,kuis__pelajaran__id_pelajaran=ambilpelajaran.id_pelajaran)
+    nilai_id = []
+    for nil in ambilnilaisiswa:
+        # print(nil.kuis)
+        if nil.kuis:
+            id_k = Kuis.objects.filter(Q(nama_kuis= nil.kuis))
+            nilai_id.append(id_k[0].id_kuis)
+    # print(nilai_id)
+    if nilai_id:
+        list_kuis_bi = Kuis.objects.filter(~Q(id_kuis__in= nilai_id)).filter(pelajaran=ambilpelajaran.id_pelajaran)
+        # print(list_kuis_mm)
+    else:
+        list_kuis_bi = Kuis.objects.filter(Q(pelajaran=ambilpelajaran.id_pelajaran))
     return render(request,'kuis/BI/view_kuis_bi.html',{'list_kuis_bi':list_kuis_bi})
 
 @login_required(login_url='/login')
 def kuismm(request):
+    ambilsesisiswa = request.session['id']
     ambilpelajaran = Pelajaran.objects.get(nama_pelajaran = "Matematika")
-    list_kuis_mm = Kuis.objects.filter(pelajaran=ambilpelajaran.id_pelajaran)
+    ambilnilaisiswa = Nilai.objects.filter(nama_id = ambilsesisiswa,kuis__pelajaran__id_pelajaran=ambilpelajaran.id_pelajaran)
+    nilai_id = []
+    for nil in ambilnilaisiswa:
+        # print(nil.kuis)
+        if nil.kuis:
+            id_k = Kuis.objects.filter(Q(nama_kuis= nil.kuis))
+            nilai_id.append(id_k[0].id_kuis)
+    # print(nilai_id)
+    if nilai_id:
+        list_kuis_mm = Kuis.objects.filter(~Q(id_kuis__in= nilai_id)).filter(pelajaran=ambilpelajaran.id_pelajaran)
+        # print(list_kuis_mm)
+    else:
+        list_kuis_mm = Kuis.objects.filter(Q(pelajaran=ambilpelajaran.id_pelajaran))
     return render(request,'kuis/MM/view_kuis_mm.html',{'list_kuis_mm':list_kuis_mm})
 
 @login_required(login_url='/login')
