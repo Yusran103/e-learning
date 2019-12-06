@@ -2,7 +2,7 @@ from django.contrib import admin
 from customadmin.models import *
 from customadmin.form import *
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.contrib.auth.admin import UserAdmin
 
 class pelajaran(admin.ModelAdmin):
@@ -61,6 +61,7 @@ UserAdmin.list_display = ('username', 'email', 'is_active','is_staff')
 UserAdmin.list_per_page = 5
 
 admin.site.unregister(User)
+# admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 admin.site.register(Materi,materi)
 admin.site.register(Soal,soal)
