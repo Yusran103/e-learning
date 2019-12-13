@@ -61,7 +61,7 @@ UserAdmin.list_display = ('username', 'email', 'is_active','is_staff')
 UserAdmin.list_per_page = 5
 
 admin.site.unregister(User)
-# admin.site.unregister(Group)
+admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 admin.site.register(Materi,materi)
 admin.site.register(Soal,soal)
