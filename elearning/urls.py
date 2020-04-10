@@ -43,5 +43,4 @@ urlpatterns = [
     path('nilai', customadmin.NilaiList.as_view(), name="nilai"),
     path('nilaikuis', customadmin.nilai, name="nilaikuis"),
     path('print/<int:pk>',customadmin.printnilai, name="printnilai"),
-
 ]
