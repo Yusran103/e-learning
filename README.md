@@ -2,6 +2,9 @@
 
 Aplikasi E-Learning + soal
 
+# Important
+ - Python 3.x
+
 # Needed Extentions
 ```bash
 pip install django
