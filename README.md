@@ -4,6 +4,7 @@ Aplikasi E-Learning + soal
 
 # Needed Extentions
 ```bash
+pip install django
 pip install django_cleanup
 pip install rest_framework
 pip install django_extensions
